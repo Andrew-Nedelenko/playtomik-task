@@ -1,12 +1,17 @@
 // eslint-disable-next-line no-use-before-define
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAccessToken } from '../../store/actions/actions';
+import { emailPattern } from '../../utils/paterns';
 
 export const FormLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState('');
+  const dispatch = useDispatch();
 
   const handleEmail = (e: React.FormEvent<HTMLInputElement>) => {
+    setErrors('');
     setEmail(e.currentTarget.value);
   };
 
@@ -14,10 +19,21 @@ export const FormLogin = () => {
     setPassword(e.currentTarget.value);
   };
 
+  const handleSumbit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    if (email === '' || password === '') {
+      return setErrors('Fill the gaps');
+    }
+    if (!emailPattern.test(email)) {
+      return setErrors('Invalid email');
+    }
+    return dispatch(getAccessToken(email, password));
+  };
+
   return (
     <div className="login-form-component">
       <div className="login-form-wrap">
-        <form>
+        <form onSubmit={handleSumbit} noValidate>
           <p>Sing In</p>
           <label htmlFor="email">
             Email
