@@ -1,4 +1,6 @@
-import { CurrentUser, GETJWTACCESS, RootActionsTypes } from '../actions/types';
+import {
+  CurrentUser, GETJWTACCESS, GETUSERDATA, RootActionsTypes,
+} from '../actions/types/main-types';
 
 interface MainReducerInitState {
   accessToken: string | undefined;
@@ -18,6 +20,11 @@ export const mainReducer = (
       return {
         ...state,
         accessToken: action.payload,
+      };
+    case GETUSERDATA:
+      return {
+        ...state,
+        currentUser: action.payload,
       };
     default:
       return state;

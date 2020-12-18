@@ -1,4 +1,5 @@
 export const GETJWTACCESS = 'GETJWTACCESS';
+export const GETUSERDATA = 'GETUSERDATA';
 
 export interface CurrentUser {
   id: number,
@@ -11,9 +12,14 @@ export interface CurrentUser {
   updatedAt: string
 }
 
-export interface getApiAccess {
+export interface GetApiAccess {
   type: typeof GETJWTACCESS;
-  payload: string;
+  payload: string | undefined;
 }
 
-export type RootActionsTypes = getApiAccess
+export interface GetUserData {
+  type: typeof GETUSERDATA;
+  payload: CurrentUser
+}
+
+export type RootActionsTypes = GetApiAccess | GetUserData

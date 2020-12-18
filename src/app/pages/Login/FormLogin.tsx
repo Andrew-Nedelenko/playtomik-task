@@ -1,13 +1,15 @@
 // eslint-disable-next-line no-use-before-define
 import React, { SyntheticEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getAccessToken } from '../../store/actions/actions';
+import { Redirect } from 'react-router-dom';
+import { getAccessToken } from '../../store/actions/main-actions';
 import { emailPattern } from '../../utils/paterns';
 
 export const FormLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState('');
+  const [redirectProfile, setRedirectProfile] = useState(false);
   const dispatch = useDispatch();
 
   const handleEmail = (e: React.FormEvent<HTMLInputElement>) => {
@@ -28,19 +30,17 @@ export const FormLogin = () => {
     if (!emailPattern.test(email)) {
       return setErrors('Invalid email');
     }
-
-    const req = await fetch(`${process.env.APIURI}/user/jwt/login`, {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    if (req.status === 200) {
-      const json = await req.json();
-      return dispatch(getAccessToken(json.accessToken));
-    }
-    const json = await req.json();
-    return setErrors(json.error);
+    await new Promise((res) => {
+      res(dispatch(getAccessToken(email, password)));
+    }).then(() => {
+      setRedirectProfile(true);
+    }).catch((err) => { setErrors(err); });
+    return false;
   };
+
+  if (redirectProfile) {
+    return <Redirect to="/profile" />;
+  }
 
   return (
     <div className="login-form-component">
