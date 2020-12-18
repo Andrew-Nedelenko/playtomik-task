@@ -16,10 +16,11 @@ export const FormLogin = () => {
   };
 
   const handlePassword = (e: React.FormEvent<HTMLInputElement>) => {
+    setErrors('');
     setPassword(e.currentTarget.value);
   };
 
-  const handleSumbit = (e: SyntheticEvent) => {
+  const handleSumbit = async (e: SyntheticEvent) => {
     e.preventDefault();
     if (email === '' || password === '') {
       return setErrors('Fill the gaps');
@@ -27,7 +28,18 @@ export const FormLogin = () => {
     if (!emailPattern.test(email)) {
       return setErrors('Invalid email');
     }
-    return dispatch(getAccessToken(email, password));
+
+    const req = await fetch(`${process.env.APIURI}/user/jwt/login`, {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    if (req.status === 200) {
+      const json = await req.json();
+      return dispatch(getAccessToken(json.accessToken));
+    }
+    const json = await req.json();
+    return setErrors(json.error);
   };
 
   return (
