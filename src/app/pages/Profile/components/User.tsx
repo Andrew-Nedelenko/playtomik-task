@@ -9,7 +9,7 @@ interface UserProps {
 const User: FC<UserProps> = ({ username, email }) => (
   <div className="user-profile">
     <div className="user-top">
-      <div className="user-title">Dashboard</div>
+      <div className="user-title">Secret Dashboard</div>
       <div className="user-icons">
         <p>{username}</p>
         <p>{email}</p>

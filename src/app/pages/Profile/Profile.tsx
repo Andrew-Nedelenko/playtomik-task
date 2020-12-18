@@ -5,7 +5,9 @@ import { Redirect } from 'react-router-dom';
 import Loading from '../../layout/Loading';
 import { getUserDataAction } from '../../store/actions/main-actions';
 import { RootState } from '../../store/reducers';
+import Navigation from './components/Navigation';
 import User from './components/User';
+import './profile.scss';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const Profile = () => {
   return (
     <div className="profile-compoent">
       <User username={currentUser?.username} email={currentUser?.email} />
+      <Navigation />
     </div>
   );
 };

@@ -16,8 +16,8 @@ export const AppRouter = () => (
     <Suspense fallback={<Loading />}>
       <Switch>
         <Route path="/" exact component={Index} />
-        <Route path="/profile" component={Profile} />
         <Route path="/login" exact component={Login} />
+        <Route path="/profile" component={Profile} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

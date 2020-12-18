@@ -38,7 +38,7 @@ export const existToken = (token: string | null) => async (dispatch: Dispatch<Ge
   });
 };
 
-export const getUserDataAction = (token: string) => async (dispatch: Dispatch<GetUserData>) => {
+export const getUserDataAction = (token: string) => async (dispatch: Dispatch<GetUserData | GetApiAccess>) => {
   const req = await fetch(`${process.env.APIURI}/user/jwt/profile`, {
     method: 'POST',
     headers: {
@@ -46,11 +46,15 @@ export const getUserDataAction = (token: string) => async (dispatch: Dispatch<Ge
     },
   });
   if (req.status === 200) {
-    const json = await req.json();
-    console.log(json, 'userdata');
+    const { userData, accessToken } = await req.json();
     dispatch({
       type: GETUSERDATA,
-      payload: json[0],
+      payload: userData[0],
     });
+    dispatch({
+      type: GETJWTACCESS,
+      payload: accessToken,
+    });
+    sessionStorage.setItem('token', accessToken);
   }
 };

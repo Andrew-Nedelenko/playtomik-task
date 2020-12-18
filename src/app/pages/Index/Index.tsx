@@ -3,6 +3,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { RootState } from '../../store/reducers';
+import Navigation from '../Profile/components/Navigation';
+import './index.scss';
 
 const Index = () => {
   const { accessToken } = useSelector((state: RootState) => state.mainReducer);
@@ -12,8 +14,9 @@ const Index = () => {
   }
 
   return (
-    <div>
-      root component
+    <div className="index-component">
+      <p>Root component</p>
+      <Navigation />
     </div>
   );
 };
